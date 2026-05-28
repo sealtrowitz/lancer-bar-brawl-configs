@@ -691,47 +691,48 @@ barConfig['deployable'] = deployableBars;
 
 await game.settings.set("barbrawl", "defaultTypeResources", barConfig);
 
-// Reset the bars on all existing actor Prototype Tokens
-await Promise.all(
-  game.actors.map(a => {
-    let barSettings;
-    switch (a.type) {
-      case 'npc':
-        barSettings = npcBars;
-        break;
-      case 'pilot':
-        barSettings = pilotBars;
-        break;
-      case 'deployable':
-        barSettings = deployableBars;
-        break;
-      default:
-        barSettings = mechBars;
-        break;
-    }
+// Apply new bar settings to all prototype tokens
+await Promise.all(game.actors.map(a => {
+  let target;
+  const v = game.version
+  if (v < "12" && v >= "11") {
+    target = a
+  } else if (v >= "12") {
+    target = a.prototypeToken
+  }
 
-    let target;
-    const v = game.version
-    if (v < "12" && v >= "11") {
-      target = a
-    } else if (v >= "12") {
-      target = a.prototypeToken
-    }
-    // Get existing flags to preserve them
-    const existingFlags = target.flags || {};
+  return target.unsetFlag('barbrawl', 'resourceBars');
+}));
 
-    // Update the actor while preserving the flags
-    return target.update({
-      flags: {
-        ...existingFlags, // Merge existing flags
-        barbrawl: {
-          ...existingFlags.barbrawl,
-          resourceBars: barSettings
-        }
-      }
-    }, { 'diff': false, 'recursive': false });
-  })
-);
+await Promise.all(game.actors.map(a => {
+  let barSettings;
+
+  // Determine which bar settings to use based on actor type
+  switch (a.type) {
+    case 'npc':
+      barSettings = npcBars;
+      break;
+    case 'pilot':
+      barSettings = pilotBars;
+      break;
+    case 'deployable':
+      barSettings = deployableBars;
+      break;
+    default:
+      barSettings = mechBars; // Use mechBars by default
+      break;
+  }
+
+  let target;
+  const v = game.version
+  if (v < "12" && v >= "11") {
+    target = a
+  } else if (v >= "12") {
+    target = a.prototypeToken
+  }
+  
+  return target.setFlag('barbrawl', 'resourceBars', barSettings);
+}));
 
 ui.notifications.info("PrototypeToken bar resources updated!");
 
