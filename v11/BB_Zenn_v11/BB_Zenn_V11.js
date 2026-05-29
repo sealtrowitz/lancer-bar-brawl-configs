@@ -330,6 +330,18 @@ const deployableBars = {
 // Apply new bar settings to all prototype tokens
 // Update actor flags without overriding other flags
 await Promise.all(game.actors.map(a => {
+  let target;
+  const v = game.version
+  if (v < "12" && v >= "11") {
+    target = a
+  } else if (v >= "12") {
+    target = a.prototypeToken
+  }
+
+  return target.unsetFlag('barbrawl', 'resourceBars');
+}));
+
+await Promise.all(game.actors.map(a => {
   let barSettings;
 
   // Determine which bar settings to use based on actor type
@@ -355,19 +367,8 @@ await Promise.all(game.actors.map(a => {
   } else if (v >= "12") {
     target = a.prototypeToken
   }
-  // Get existing flags to preserve them
-  const existingFlags = target.flags || {};
+  return target.setFlag('barbrawl', 'resourceBars', barSettings);
 
-  // Update the actor while preserving the flags
-  return target.update({
-    flags: {
-      ...existingFlags, // Merge existing flags
-      barbrawl: {
-        ...existingFlags.barbrawl,
-        resourceBars: barSettings
-      }
-    }
-  }, { 'diff': false, 'recursive': false });
 }));
 
 // Reset all tokens' bars in all scenes
