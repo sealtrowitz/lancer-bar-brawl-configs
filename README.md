@@ -34,7 +34,7 @@ Links to download: [Foundry v10](https://github.com/Kuenaimaku/lancer-bar-brawl-
 ___
 # Bar Brawl Configs
 
-## Version 12
+## Version 12 (unless specified, these should also work in v13)
 
 ### [Zenn](v11/BB_Zenn_v11)
 > [!IMPORTANT]
@@ -99,7 +99,7 @@ token.document.update({ [`flags.barbrawl.resourceBars.${barId2}.style`]: "fracti
 
 <details markdown="1">
   <summary>
-    <h2>Version 11 (unless specified, these should also work in v12)</h2>
+    <h2>Version 11 (unless specified, these should also work in v12 and v13)</h2>
   </summary>
 
 ### [Kuenaimaku](v11/BB_kuenaimaku_v11.js)
