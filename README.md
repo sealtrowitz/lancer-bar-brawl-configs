@@ -85,15 +85,7 @@ Bottom bars (input box in HUD only, bar is hidden!):
 
 This config auto-sets structure and stress pips to their correct values for *existing* NPCs, but not ones created after running the macro. Running the macro again will set the pips for new NPCs. Huge shoutout and thank you to LaSossis in Pilotnet for the addition to the macro that allows this part to work!
 
-For NPCs and Deployables, the bars themselves are always visible, but the specific value of each is only displayed for the owner. This means that players can only see "estimates" of stats for unowned tokens. Below is a small macro you can use to make the values of a selected token visible to players, useful after they scan said NPC:
-```js
-// the bars we're going to change
-let barId = "unownedHeat";
-let barId2 = "unownedHp";
-
-// update them to be visible to players
-token.document.update({ [`flags.barbrawl.resourceBars.${barId}.style`]: "fraction" });
-token.document.update({ [`flags.barbrawl.resourceBars.${barId2}.style`]: "fraction" });```
+For NPCs and Deployables, the bars themselves are always visible, but the specific value of each is only displayed for the owner. This means that players can only see "estimates" of stats for unowned tokens. [Here](v12/BB_sarah_valueupdate.js) you can find a small macro you can use to make the values of a selected token visible to players, useful after they scan said NPC.
 
 ![sarah-Bar-Brawl-Config-Example](v12/sarah-bar-brawl-defaults.png)
 
